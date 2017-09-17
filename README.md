@@ -25,9 +25,9 @@ Then clone the forked version of the repository to your computer using the URL l
 ```
 $ git clone <url-of-your-fork>
 ```
-We use a triangular workflow - you should push to your Github account's fork, but fetch/pull from this master repository. Setting this up requires adding a remote to this repository account. Use these commands to add the remote to a new folder called "dc-doh-hackathon":
+We use a triangular workflow - you should push to your Github account's fork, but fetch/pull from this master repository. Setting this up requires adding a remote to this repository account. "Git clone" will have created your repository in a new folder called "dc_doh_hackathon". Use these commands to add the remote to that new folder:
 ```
-$ cd dc-doh-hackathon
+$ cd dc_doh_hackathon
 $ git remote add dohhackathon https://github.com/jasonasher/dc_doh_hackathon.git
 $ git remote -v
   #you should see this:
