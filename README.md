@@ -56,4 +56,4 @@ Please push your code to the folder labeled with your task!
 
 **Rat Riddance:** Jason Asher (jason.m.asher [AT] gmail [DOT] com) and Elizabeth Lee (eclee25 [AT] gmail [DOT] com)
 
-**Food Safety/Restaurant Inspections:** Mohammad Kemal (mohakemal9 [AT] gmail[DOT] com)
+**Food Safety/Restaurant Inspections:** Mohammad Kemal (mohakemal9@gmail.com)
