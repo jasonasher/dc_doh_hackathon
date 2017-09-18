@@ -14,14 +14,15 @@ We are recruiting individuals for the following tasks:
 * **Data cleaning:** Help us convert raw data frames into clean feature datasets that are ready to integrate into models!
 * **Data visualization:** Look at the available datasets (See the "Dataset summary" tab in our [sign up sheet](https://docs.google.com/spreadsheets/d/1dp82BlwxMHGIiNPjfspWBkp_K1SZox0PXug8J8aOssU/edit?usp=sharing), chat with DC DOH agency representatives about maps and visualizations of interest, and create the visualizations!
 * **User interface/experience (UI/UX):** 1) Build out features for our current 311 data portal (http://dc311portal.codefordc.org/) OR 2) Design and start to develop an application to view and report restaurant violations.
-* **Project management:** Interested in helping us manage the project? Chat with one of the project leads! 
+* **Develop web app:** From 311 data analysis develop a web app or for system that can improve the quality of data while inspection is done and during follow up.
+* **Project management:** Interested in helping us manage the project? Chat with one of the project leads!
 
 Find a task to tackle in Github issues!
 
 ## Contribute your code
 
 Start by forking this repository to your Github account (click "Fork" in the top right).
-Then clone the forked version of the repository to your computer using the URL listed under "Clone or Download". 
+Then clone the forked version of the repository to your computer using the URL listed under "Clone or Download".
 ```
 $ git clone <url-of-your-fork>
 ```
