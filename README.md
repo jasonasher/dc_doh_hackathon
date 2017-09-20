@@ -73,7 +73,6 @@ The Rat Hack meets regularly at Code for DC meetup events. To stay involved afte
   3. Check out our [primary project page](https://eclee25.github.io/the-rat-hack/)
   4. Make sure your name and contact information are on our [hackathon sign up sheet](https://docs.google.com/spreadsheets/d/1dp82BlwxMHGIiNPjfspWBkp_K1SZox0PXug8J8aOssU/edit?usp=sharing)!
 
-***
 **Food Safety/Restaurant Inspections:**
 
   The restaurant insepction Hack meets regularly at Code for DC meetup events. To stay involved after the hackathon:
