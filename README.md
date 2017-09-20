@@ -20,7 +20,7 @@ DOH follows the federal food code and only closes an establishment for critical 
 The goals for our project
   1. Data analysis/visualizations of the DOH restaurant inspection data report
   2. Develop a model featuring relationships between location, risk category, serious food-safety violations, closure etc.
-  3.
+  3. Develop an application for DOH staff that tracks upcoming  inspections, displays information on expiring licenses, and aids in the efficient prioritization of follow-up inspections.
 
 
 ***
