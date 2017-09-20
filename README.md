@@ -77,9 +77,9 @@ The Rat Hack meets regularly at Code for DC meetup events. To stay involved afte
 
   The restaurant insepction Hack meets regularly at Code for DC meetup events. To stay involved after the hackathon:
 
-    1. Join the Code for DC group on [Meetup](https://www.meetup.com/) and
-    3. Subscripbe for [#restaurant_inspection channel](https://codefordc.slack.com/messages/C221SGTKJ/search/in:%23restaurant_inspection/).
-    3. Make sure your name and contact information are on our [hackathon sign up sheet](https://docs.google.com/spreadsheets/d/1dp82BlwxMHGIiNPjfspWBkp_K1SZox0PXug8J8aOssU/edit?usp=sharing)!
+  1. Join the Code for DC group on [Meetup](https://www.meetup.com/) and
+  3. Subscripbe for [#restaurant_inspection channel](https://codefordc.slack.com/messages/C221SGTKJ/search/in:%23restaurant_inspection/)
+  3. Make sure your name and contact information are on our [hackathon sign up sheet](https://docs.google.com/spreadsheets/d/1dp82BlwxMHGIiNPjfspWBkp_K1SZox0PXug8J8aOssU/edit?usp=sharing)!
 
 
 ***
