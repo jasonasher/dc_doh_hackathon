@@ -1,5 +1,6 @@
 ***
 # DC Government Health and Human Services Hackathon
+![a](https://user-images.githubusercontent.com/23619819/30629730-7a274c62-9dab-11e7-860b-921895f6e839.PNG)
 National Day of Civic Hacking, September 23rd, 2017
 
 This repository is for hackathon projects supporting the DC Department of Health.
