@@ -1,21 +1,25 @@
+***
 # DC Government Health and Human Services Hackathon
 National Day of Civic Hacking, September 23rd, 2017
 
 This repository is for hackathon projects supporting the DC Department of Health.
 
+***
 ## Project descriptions
-
+***
 ### Rat Riddance
 Orkin Pest Control recently named Washington DC the third "rattiest" city in America, and long-time DC residents know that rodent populations have been on the rise. Mayor Bowser announced a "Rat Riddance" intitiative last year, which aims to reduce rodent populations through changes in commercial practice and community awareness campaigns. In support of these efforts, the DC Office of the Chief Technology Officer (OCTO) has been analyzing 311 service request data related to rodent abatement requests and developing models to predict upticks in rat-related complaints in space and time.
 
 The goals for our project are 2-fold:
   1. Develop models that can predict long-term trends in rodent complaints. These models will be complementary to ongoing OCTO efforts.
   2. Build out features on a public-facing 311 data portal that allows users to examine trends in service complaints over time and in their neighborhoods. This data portal will encompass all nuisance-related service complains, not just those related to rodents.
-
+***
 ### Food Safety/Restaurant Inspections
+  1. Data analysis/visualizations of the DOH restaurant inspection data report
+  2. Develop a model featuring relationships between location, risk category, serious food-safety violations, closure etc.
 
-[Add notes about how the goals of the project]
 
+***
 ## Join the projects
 
 1. Add your name to our [sign up sheet](https://docs.google.com/spreadsheets/d/1dp82BlwxMHGIiNPjfspWBkp_K1SZox0PXug8J8aOssU/edit?usp=sharing) in the "Sign up sheet" tab
@@ -30,7 +34,7 @@ We are recruiting individuals for the following types of tasks:
   2. Design and start to develop a web application for the public to view DOH insepction reports for food retail establishments  
   3. Design and start to develop an application for DOH staff that tracks upcoming inspections, displays information on expiring licenses, and aids in the efficient prioritization of follow-up inspections.
 * **Project management:** Interested in helping us manage the project? Chat with one of the project leads!
-
+***
 ## Contribute your code
 
 Start by forking this repository to your Github account (click "Fork" in the top right).
@@ -58,7 +62,7 @@ $ git pull dohhackathon <branch-name>   #fetches and merges from the dohhackatho
 Here’s [more information](https://github.com/blog/2042-git-2-5-including-multiple-worktrees-and-triangular-workflows#improved-support-for-triangular-workflows) on setting up triangular workflows (scroll to “Improved support…”).
 
 Never worked with a triangular workflow before? Ask a project lead for help.
-
+***
 ## After the Hackathon
 
 **Rat Riddance:**
@@ -69,9 +73,15 @@ The Rat Hack meets regularly at Code for DC meetup events. To stay involved afte
   3. Check out our [primary project page](https://eclee25.github.io/the-rat-hack/)
   4. Make sure your name and contact information are on our [hackathon sign up sheet](https://docs.google.com/spreadsheets/d/1dp82BlwxMHGIiNPjfspWBkp_K1SZox0PXug8J8aOssU/edit?usp=sharing)!
 
-**Food Safety/Restaurant Inspections:**
+***
+  **Food Safety/Restaurant Inspections:**
 
-[tell people how to remain involved with the project]
+  The restaurant insepction Hack meets regularly at Code for DC meetup events. To stay involved after the hackathon:
+    1. Join the Code for DC group on [Meetup](https://www.meetup.com/) and subscripbe for [#restaurant_inspection channel](https://codefordc.slack.com/messages/C221SGTKJ/search/in:%23restaurant_inspection/).
+    2. Join the [Code for DC Slack](https://codefordc.org/joinslack) and hop on to the #rats channel
+    3. Make sure your name and contact information are on our [hackathon sign up sheet](https://docs.google.com/spreadsheets/d/1dp82BlwxMHGIiNPjfspWBkp_K1SZox0PXug8J8aOssU/edit?usp=sharing)!
+
+
 
 ## Contact
 
