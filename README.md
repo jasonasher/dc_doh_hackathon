@@ -1,5 +1,4 @@
 # DC Government Health and Human Services Hackathon 
-## DC Department of Health Projects
 National Day of Civic Hacking, September 23rd, 2017
 
 This repository is for hackathon projects supporting the DC Department of Health.
@@ -17,7 +16,7 @@ The goals for our project are 2-fold:
 
 ## Join the projects
 
-Add your name to our [sign up sheet](https://docs.google.com/spreadsheets/d/1dp82BlwxMHGIiNPjfspWBkp_K1SZox0PXug8J8aOssU/edit?usp=sharing) in the "Sign up sheet" tab.
+Add your name to our [sign up sheet](https://docs.google.com/spreadsheets/d/1dp82BlwxMHGIiNPjfspWBkp_K1SZox0PXug8J8aOssU/edit?usp=sharing) in the "Sign up sheet" tab and find an available task under Github Issues.
 
 We are recruiting individuals for the following types of tasks:
 
@@ -28,8 +27,6 @@ We are recruiting individuals for the following types of tasks:
   2. Design and start to develop a web application for the public to view DOH insepction reports for food retail establishments OR 
   3. Design and start to develop an application for DOH staff that tracks upcoming inspections, displays information on expiring licenses, and aids in the efficient prioritization of follow-up inspections. 
 * **Project management:** Interested in helping us manage the project? Chat with one of the project leads!
-
-Find a task to tackle in Github issues!
 
 ## Contribute your code
 
@@ -64,7 +61,7 @@ Never worked with a triangular workflow before? Ask a project lead for help.
 **Rat Riddance:** 
 
 The Rat Hack meets regularly at Code for DC meetup events. To stay involved after the hackathon:
-  1. Join the Code for DC group on Meetup.com
+  1. Join the Code for DC group on [Meetup](https://www.meetup.com/)
   2. Join the [Code for DC Slack](https://codefordc.org/joinslack) and hop on to the #rats channel
   3. Check out our [primary project page](https://eclee25.github.io/the-rat-hack/)
   4. Make sure your name and contact information are on our [hackathon sign up sheet](https://docs.google.com/spreadsheets/d/1dp82BlwxMHGIiNPjfspWBkp_K1SZox0PXug8J8aOssU/edit?usp=sharing)!
