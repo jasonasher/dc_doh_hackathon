@@ -29,6 +29,7 @@ The goals for our project
 
 1. Add your name to our [sign up sheet](https://docs.google.com/spreadsheets/d/1dp82BlwxMHGIiNPjfspWBkp_K1SZox0PXug8J8aOssU/edit?usp=sharing) in the "Sign up sheet" tab
 2. Find an available task under Github Issues, assign yourself or your group to the task, and get hacking! We will be adding new issues throughout the day, so check back later if you don't see something that immediately catches your interest.
+3. **Don't feel limited to the tasks on GitHub! If you have an idea that isn't listed, add your task to the "Tasks for Day-of" tab in the [sign up sheet](https://docs.google.com/spreadsheets/d/1dp82BlwxMHGIiNPjfspWBkp_K1SZox0PXug8J8aOssU/edit?usp=sharing) or come find one of us to chat about it!**
 
 We are recruiting individuals for the following types of tasks:
 
