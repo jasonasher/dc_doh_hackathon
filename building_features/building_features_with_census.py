@@ -43,10 +43,11 @@ df = df.loc[lastdayfrom - pd.Timedelta(days=28):lastdayfrom].reset_index()
 df['year'], df['week'] = df['ISSUE_DATE'].dt.year, df['ISSUE_DATE'].dt.week
 del df['ISSUE_DATE']
 
-#adding value field
+#adding value and feature_id field
 df = df.groupby(['feature_type', 'feature_subtype', 'census_block_2010', 'year', 'week']).size()
 df = df.reset_index()
 df = df.rename(columns={0:'value'})
+df['feature_id'] = 'building_permits_issued_last_4_weeks'
 
 #take a look
 print(df)
