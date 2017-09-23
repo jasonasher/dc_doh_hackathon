@@ -44,12 +44,12 @@ We are recruiting individuals for the following types of tasks:
 ***
 ## Contribute your code
 
-Start by forking this repository to your Github account (click "Fork" in the top right).
+1. Start by forking this repository to your Github account (click "Fork" in the top right).
 Then clone the forked version of the repository to your computer using the URL listed under "Clone or Download".
 ```
 $ git clone <url-of-your-fork>
 ```
-We use a triangular workflow - you should push to your Github account's fork, but fetch/pull from this master repository. Setting this up requires adding a remote to this repository account. "Git clone" will have created your repository in a new folder called "dc_doh_hackathon". Use these commands to add the remote to that new folder:
+2. We use a triangular workflow - you should push to your Github account's fork, but fetch/pull from this master repository. Setting this up requires adding a remote to this repository account. "Git clone" will have created your repository in a new folder called "dc_doh_hackathon". Use these commands to add the remote to that new folder:
 ```
 $ cd dc_doh_hackathon
 $ git remote add dohhackathon https://github.com/jasonasher/dc_doh_hackathon.git
@@ -60,8 +60,15 @@ $ git remote -v
   origin          <your/forked/url> (push)
   origin          <your/forked/url> (fetch)
 ```
-Now instead of plain `git push` and `git pull`, use these:
+3. Commit and push your code to your forked repository with the following commands:
+```
+$ git add <your_filename> # adds the filename for tracking in your Git repository
+$ git commit # a text editing software will popup and you can add a commit message there
+$ git push origin master # push your commit from Git to Github
+```
+4. Now, submit a pull request to merge your commit to the "jasonasher/dc_doh_hackathon" repository. To do this, go to the [main repository](https://github.com/jasonasher/dc_doh_hackathon). Navigate to the "pull requests" tab and click on the button "New pull request." Click on the link to "compare across forks." The base fork and base should say "jasonasher/dc_doh_hackathon" and "master", respectively. Change the head fork and base to "your-user-name/dc_doh_hackathon" and "master", respectively. Create the pull request, submit a comment about your commit, and you're done!
 
+N.B., For future commits with your remote setup, instead of `git push` and `git pull`, use these:
 ```
 $ git push origin <branch-name>         #pushes to your forked repo
 $ git pull dohhackathon <branch-name>   #fetches and merges from the dohhackathon repo
