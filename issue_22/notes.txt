@@ -1,0 +1,11 @@
+Attract rats:
+- food
+- shelter
+- environmental factors (temp)
+
+# Census info
+Definition of block group: https://www.census.gov/geo/reference/gtc/gtc_bg.html
+census.gov population data: https://www.census.gov/geo/maps-data/data/tiger-data.html
+ACS population data only seems to have block group as most granular level (since 2011): https://www.census.gov/data/developers/data-sets/acs-5year.html
+Explanation of GEOIDs: https://www.census.gov/geo/reference/geoidentifiers.html
+
