@@ -1,0 +1,36 @@
+feature_type,feature_subtype,census_block_2010,year,week,value,feature_id
+CONSTRUCTION,ALTERATION AND REPAIR,2001,2017,38,2,building_permits_issued_last_4_weeks
+CONSTRUCTION,ALTERATION AND REPAIR,4006,2017,37,3,building_permits_issued_last_4_weeks
+CONSTRUCTION,CIVIL PLANS,4006,2017,37,1,building_permits_issued_last_4_weeks
+CONSTRUCTION,DEMOLITION,4006,2017,37,1,building_permits_issued_last_4_weeks
+CONSTRUCTION,MISCELLANEOUS,4006,2017,38,2,building_permits_issued_last_4_weeks
+CONSTRUCTION,NEW BUILDING,1001,2017,34,1,building_permits_issued_last_4_weeks
+CONSTRUCTION,NEW BUILDING,1001,2017,35,1,building_permits_issued_last_4_weeks
+CONSTRUCTION,NEW BUILDING,1001,2017,38,1,building_permits_issued_last_4_weeks
+CONSTRUCTION,NEW BUILDING,1003,2017,34,1,building_permits_issued_last_4_weeks
+CONSTRUCTION,NEW BUILDING,1003,2017,35,1,building_permits_issued_last_4_weeks
+CONSTRUCTION,NEW BUILDING,1027,2017,36,1,building_permits_issued_last_4_weeks
+CONSTRUCTION,NEW BUILDING,2006,2017,38,1,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,ELECTRICAL,1001,2017,34,2,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,ELECTRICAL,1001,2017,35,4,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,ELECTRICAL,1001,2017,36,1,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,ELECTRICAL,1001,2017,38,2,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,ELECTRICAL,1003,2017,35,1,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,ELECTRICAL,2006,2017,38,1,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,ELECTRICAL,3003,2017,34,1,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,MECHANICAL,1001,2017,35,2,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,MECHANICAL,1001,2017,36,1,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,MECHANICAL,1001,2017,38,1,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,MECHANICAL,1003,2017,35,1,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,MECHANICAL,1027,2017,36,1,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,MECHANICAL,2001,2017,35,1,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,MECHANICAL,2006,2017,38,2,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,PLUMBING AND GAS,1001,2017,34,2,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,PLUMBING AND GAS,1001,2017,35,1,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,PLUMBING AND GAS,1001,2017,38,4,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,PLUMBING AND GAS,1003,2017,35,2,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,PLUMBING AND GAS,1027,2017,36,3,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,PLUMBING AND GAS,1027,2017,37,1,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,PLUMBING AND GAS,2001,2017,38,1,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,PLUMBING AND GAS,2006,2017,38,2,building_permits_issued_last_4_weeks
+SUPPLEMENTAL,PLUMBING AND GAS,3003,2017,34,1,building_permits_issued_last_4_weeks
