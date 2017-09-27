@@ -1,10 +1,11 @@
-library(lubridate)
-library(dplyr)
+require(lubridate)
+require(dplyr)
+require(readr)
 
-setwd('C:/Users/xavie/Desktop/dc_doh_hackathon') # When this file is sourced it captures the current directory
+args <- commandArgs(trailingOnly = TRUE)
 
-inspections <- read_csv("Restaurant Inspections/potential_inspection_summary_data.csv")
-location <- read_csv("restaurants/inspection_geocodes_w_block.csv") # created using add_census_block_data.R from DropBox
+inspections <- read_csv(args[1])
+location <- read_csv(args[2]) # created using add_census_block_data.R from DropBox
 
 # add new cols
 inspections$census_block <- location$census_block
@@ -17,11 +18,11 @@ inspections$inspection_type <- tolower(inspections$inspection_type)
 
 # filter and count
 data <- inspections %>%
-    select(establishment_type, risk_category, year, week, census_block, inspection_type) %>%
+    select(establishment_type, establishment_name, risk_category, year, week, census_block, inspection_type) %>%
     filter(inspection_type == 'complaint') %>%
     group_by(establishment_type, risk_category, year, week, census_block) %>%
     summarise(value=n()) %>%
     mutate(restaurant_inspection_complaints = 'restaurant_inspection_complaints') %>%
     arrange(restaurant_inspection_complaints, establishment_type, risk_category, year, week, census_block, value)
 
-write_csv(data, "restaurants/new complaints.csv")
+write_csv(data, paste(args[3],".csv", sep = ""))

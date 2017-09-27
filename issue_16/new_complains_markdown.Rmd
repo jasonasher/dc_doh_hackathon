@@ -1,0 +1,55 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+### To Run this code in a command line, please define the location to "RScript.exe" with the following code:
+#### set R_Script="C:\Program Files\R\R-3.4.1\bin\RScript"
+#### Note: The path to your RScript may be different. Please update it and run that line first in order to run R in the command line.
+
+Load packages
+
+  Lubridate: Extrate dates
+  Dplyr: Transform Data
+  Readr: Read csv files
+  
+```{r}
+require(lubridate)
+require(dplyr)
+require(readr)
+```
+
+Argument 1: Inspection Data
+Argument 2: Location Data
+Argument 3: New File
+
+Note: When you pass the files into new_complaints.R, be sure to include the entire file name. The argument must be "filename.csv", not "filename".
+
+```{r}
+args <- commandArgs(trailingOnly = TRUE)
+
+inspections <- read_csv("potential_inspection_summary_data.csv")
+location <- read_csv("inspection_geocodes_w_block.csv") # created using add_census_block_data.R from DropBox
+
+# add new cols
+inspections$census_block <- location$census_block
+inspections$year <- year(inspections$inspection_date)
+inspections$week <- week(inspections$inspection_date)
+
+# process inspection_type string
+inspections$inspection_type <- tolower(inspections$inspection_type)
+
+
+# filter and count
+data <- inspections %>%
+    select(establishment_type, establishment_name, risk_category, year, week, census_block, inspection_type) %>%
+    filter(inspection_type == 'complaint') %>%
+    group_by(establishment_type, risk_category, year, week, census_block) %>%
+    summarise(value=n()) %>%
+    mutate(restaurant_inspection_complaints = 'restaurant_inspection_complaints') %>%
+    arrange(restaurant_inspection_complaints, establishment_type, risk_category, year, week, census_block, value)
+
+write_csv(data, paste(args[3],".csv", sep = "")
+
+complaints <- read_csv("./new complaints.csv")
+```
