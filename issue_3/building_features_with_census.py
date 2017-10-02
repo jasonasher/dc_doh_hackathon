@@ -1,23 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 import pandas as pd
 import geopandas
 import geopandas.tools
 from shapely.geometry import Point
- 
-# Note: you will need to install the rtree package - http://toblerity.org/rtree/install.html
- 
+  
 #read in data
 fields=['ISSUE_DATE', 'PERMIT_TYPE_NAME', 'PERMIT_SUBTYPE_NAME', 'LONGITUDE', 'LATITUDE']
-df = pd.read_csv('All_Building_permits.csv', usecols=fields)
+df = pd.read_csv('Building Permits/All_Building_permits.csv', usecols=fields)
 
 #geocode lat long to census block
 df['geometry'] = df.apply(lambda row: Point(row['LONGITUDE'], row['LATITUDE']), axis=1)
 df = geopandas.GeoDataFrame(df, geometry='geometry')
 df.crs = {'init': 'epsg:4326'}
  
-census_blocks = geopandas.GeoDataFrame.from_file('dc_2010_block_shapefiles/tl_2016_11_tabblock10.shp')
+census_blocks = geopandas.GeoDataFrame.from_file('shapefiles and geospatial information/dc_2010_block_shapefiles/tl_2016_11_tabblock10.shp')
 census_blocks.crs = {'init': 'epsg:4326'}
  
 result = geopandas.tools.sjoin(df[['geometry']], census_blocks[['BLOCKCE10', 'geometry']], how='left')
@@ -30,24 +27,33 @@ del df['LONGITUDE']
 del df['LATITUDE']
 df = df.rename(columns={'PERMIT_TYPE_NAME': 'feature_type', 'PERMIT_SUBTYPE_NAME':'feature_subtype'})
 
-#convert date column to date type 
-df['ISSUE_DATE'] = pd.to_datetime(df.ISSUE_DATE)
-
-#grab the last four weeks (28 days) of data from the last data point, 9/20/2017
-lastdayfrom = pd.to_datetime('9/20/2017')
-df = df.set_index('ISSUE_DATE')
-df.index = df.index.sort_values()
-df = df.loc[lastdayfrom - pd.Timedelta(days=28):lastdayfrom].reset_index()
-
-#break ISSUE_DATE into year and week fields 
-df['year'], df['week'] = df['ISSUE_DATE'].dt.year, df['ISSUE_DATE'].dt.week
-del df['ISSUE_DATE']
 
 #adding value and feature_id field
-df = df.groupby(['feature_type', 'feature_subtype', 'census_block_2010', 'year', 'week']).size()
+df = df.groupby(['feature_type', 'feature_subtype', 'census_block_2010', 'ISSUE_DATE']).size()
 df = df.reset_index()
 df = df.rename(columns={0:'value'})
-df['feature_id'] = 'building_permits_issued_last_4_weeks'
 
-#take a look
-print(df)
+
+#convert date column to date type 
+df['ISSUE_DATE'] = pd.to_datetime(df.ISSUE_DATE)
+df.index = df['ISSUE_DATE']
+
+
+# Resample to weekly and fill in blanks with zeros  
+WeeklyData = df.groupby(['feature_type','feature_subtype','census_block_2010']).resample('W-MON',closed='left',on='ISSUE_DATE',label='left').sum().reset_index()
+WeeklyData.sort_values(by=['feature_type','feature_subtype','census_block_2010','ISSUE_DATE'])
+WeeklyData=WeeklyData.fillna(0)
+
+
+# Sum over rolling 4 week periods from weekly data
+Avg4Week=WeeklyData.groupby(by=['feature_type','feature_subtype','census_block_2010']).rolling(4,min_periods=1,on='ISSUE_DATE').sum()
+
+# Add integer year and weeks
+Avg4Week=Avg4Week[['feature_type','feature_subtype','census_block_2010','ISSUE_DATE','value']].reset_index(drop=True)
+Avg4Week['year'],Avg4Week['week']=Avg4Week['ISSUE_DATE'].apply(lambda x: x.isocalendar()[0]),Avg4Week['ISSUE_DATE'].apply(lambda x: x.isocalendar()[1])
+Avg4Week['feature_id']= 'building_permits_issued_last_4_weeks'
+Avg4Week=Avg4Week[['feature_id','feature_type','feature_subtype','year','week','census_block_2010','value']]
+
+# Output File to CSV
+Avg4Week.to_csv('BuildingFeaturesOutput.csv',index=False)
+
