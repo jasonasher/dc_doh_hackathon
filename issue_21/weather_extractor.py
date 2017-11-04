@@ -93,7 +93,7 @@ def main(input_dir, output_dir):
 # In[36]:
 
 
-input_dir = './/airport_weather_data'
+input_dir = './/airport_weather_data_raw'
 output_dir = './/'
 main(input_dir, output_dir)
 
