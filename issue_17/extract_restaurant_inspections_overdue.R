@@ -1,143 +1,141 @@
-###############################################################################
-# Title: Extract 'Overdue Inspections' Feature from Restaurant Inspection Data #17
+###########################################################################
+# Issue: #17 Extract 'Overdue Inspections' Feature from Restaurant Inspection Data
 # Author: Kathy Xiong
-# Last updated: 2017-12-21
+# Last Updated: 2017-01-04
 #
-# Purpose:
-# This script summarises the number of overdue restaurant inspections by 
-# establishment type and risk category, for each year, week, and census block
+# Description: 
+# This script summarises the restaurant inspections data by year, week, census block,
+# establishment type, and risk category, and creates two features: number of 
+# overdue inspections and average number of days since last inspection (inspection frequency).
+# The second output is added as an alternative feature to test even though it was
+# not part of the original issue.
 # 
 # Instructions:
-# Update all directory paths to match local file structure before running script
+# Update paths in section labeled "UPDATE PATHS" below before running script
 # 
 # Inputs:
 # - cleaned restaurant inspections and geocoding files:
 #   - dc_restaurant_inspections/potential_inspection_summary_data.csv
-#   - dc_restaurant_inspections/inspections_geocoded.csv
-# - 2010 census blocks shapefile:
-#   - census_2010/tl_2016_11_tabblock10.shp, etc.
+#   - dc_restaurant_inspections/restaurant_inspections_geocoded.csv
 #
 # Outputs:
-# - CSV file with overdue inspection values:
+# - CSV files with features:
 #   - restaurant_inspections_overdue.csv
-# - Quick visualisation of total inspections by week by risk category:
+#   - restaurant_inspections_frequency.csv
+# - Quick visualisations by week by risk category:
 #   - restaurant_inspections_overdue.png
+#   - restaurant_inspections_frequency.png
 #
 # Open issues:
 # - Update inspection frequency requirements with official DOH values
-# - Based on inspection frequency requirements, update the earliest date in the
-#   output file so that we don't "undercount" overdue inspections in weeks
-#   where we don't have enough historical data. For example, if an establishment
-#   needs to be inspected every year, and we only have inspection data starting 
-#   2008-01-01, we do not know if inspections have occured before 2008-01-01, so
-#   we cannot know if it is overdue for inspection until 2009-01-01
+# - Decide what to do about the 'bias' towards fewer overdue inspections &
+#   more frequent inspections in earlier time periods. In the earlier time periods,
+#   most establishment would have an "NA" for days since last inspection, because
+#   their last inspection is not in the data set; only those that have had inspections
+#   very recently (i.e. since start of data set) would have a value and be 
+#   included in the aggregate calculations.
+#   
 ###############################################################################
 
-# Set up -----------------------------------------------------------------------
+
+# Set up ------------------------------------------------------------------
+
 library(tidyverse)
 library(lubridate)
-library(stringr)
-library(ISOweek)
-library(rgdal)
+#library(tictoc)
 
-setwd("/Users/kathy/Documents/_projects/dc_doh_hackathon")
+#### UPDATE PATHS ####
+path_proj <- "/Users/kathy/Documents/_projects/dc_doh_hackathon"
+path_data <- paste0(path_proj, "/issue_17/data")
+path_out <- paste0(path_proj, "/issue_17/output")
+######################
 
-# Read in data -----------------------------------------------------------------
-inspection_geocode <- read_csv("data/dc_restaurant_inspections/inspections_geocoded.csv")
-inspection_summary <- read_csv("data/dc_restaurant_inspections/potential_inspection_summary_data.csv")
+# Read in data ------------------------------------------------------------
 
-census_blocks <- readOGR("data/census_2010", "tl_2016_11_tabblock10")
+inspection_geocode <- read_csv(paste0(path_data, "/restaurant_inspections_geocoded.csv"))
+inspection_summary <- read_csv(paste0(path_data, "/potential_inspection_summary_data.csv"))
 
-# Create weekly time intervals to loop over ------------------------------------
 
-## Dataset appears to contain inspections between 2008-01-08 and 2017-09-11. 
-## So we will use that as the start and end dates.
-## See explore_restaurant_inspections.Rmd for details.
-##
-## Also we will use Monday of each week as the cutoff to calculate # of
-## overdue inspections.
+# Clean data sets ---------------------------------------------------------
 
-first_day <- date2ISOweek("2008-01-08")
-first_monday <- paste0(str_sub(first_day, 1, -2), "1")
-first_monday <- ISOweek2date(first_monday)
+# remove duplicates
+inspection_summary <- distinct(inspection_summary, inspection_id, .keep_all = TRUE)
+inspection_geocode <- distinct(inspection_geocode, inspection_id, .keep_all = TRUE)
 
-last_day <- date2ISOweek("2017-09-11")
-last_monday <- paste0(str_sub(last_day, 1, -2), "1")
-last_monday <- ISOweek2date(last_monday)
+# remove dates that fall outside of target date range
+start_date <- as.Date("2008-01-01")
+end_date <- as.Date("2017-12-31")
 
-mondays <- seq(first_monday, last_monday, by = 7)
+inspection_summary <- inspection_summary %>% 
+  filter(inspection_date >= start_date & inspection_date <= end_date)
 
-# Prepare inspections data -----------------------------------------------------
-# Add required inspection frequencies. 
-## These are PLACEHOLDERS ONLY. To be updated with real frequencies from DOH.
-## For reasoning behind these guesses, see explore_restaurant_inspections.Rmd
-inspection_summary_1 <- inspection_summary %>% 
-  mutate(
-    inspection_frequency = case_when(
-      risk_category == 1 ~ 900,
-      risk_category == 2 ~ 600,
-      risk_category == 3 ~ 600,
-      risk_category == 4 ~ 600,
-      risk_category == 5 ~ 600
-    )
-  )
+# add required frequencies
+inspection_summary <- inspection_summary %>% 
+  mutate(required_inspection_freq = case_when(
+    risk_category == 1 ~ 900,
+    risk_category == 2 ~ 600,
+    risk_category == 3 ~ 600,
+    risk_category == 4 ~ 600,
+    risk_category == 5 ~ 600
+  ))
 
-## Turn inspection geocodes into a spatial object
-## Note that the coordinates are taken from ggmap (see issue #13 submission) 
-## which uses the WGS84 datum. For reference see p2, "3. Add polygons from sp file",
-## https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/ggmap/ggmapCheatsheet.pdf
+# merge in geo code
+inspection_summary <- inspection_summary %>% 
+  left_join(inspection_geocode, by = "inspection_id")
 
-inspection_coord <- inspection_geocode %>% 
-  select(longitude, latitude)
 
-inspection_spdf <- SpatialPointsDataFrame(coords = inspection_coord, 
-                                          data = inspection_geocode,
-                                          proj4string = CRS("+proj=longlat +datum=WGS84"))
+# Extract features --------------------------------------------------------
 
-# Project census blocks shapefile
-census_blocks_projected <- spTransform(census_blocks, inspection_spdf@proj4string)
+# create a vector of dates
+days <- seq(start_date, end_date, by = "days")
+mondays <- days[weekdays(days) == "Monday"]
 
-# Determine census block for each inspection
-inspection_block <- over(inspection_spdf, census_blocks_projected)
-inspection_spdf$census_block_2010 <- inspection_block$BLOCKCE10
+# arrange data with most recent inspection first
+inspection_summary <- inspection_summary %>% 
+  arrange(establishment_name, address, desc(inspection_date))
 
-# Add census block to summary dataset
-inspection_summary_2 <- inspection_summary_1 %>% 
-  left_join(inspection_spdf@data, by = "inspection_id")
-
-# Extract overdue inspections --------------------------------------------------
-# Create loop to extract overdue inspections in any given week
-res <- vector("list", length(mondays))
-
-for (i in seq_along(mondays)) {
-  
-  # Get the most recent (prior to start of week) inspection per establishment
-  data <- inspection_summary_2 %>% 
-    filter(inspection_date <= mondays[i]) %>% 
-    arrange(establishment_name, address, desc(inspection_date)) %>% 
-    group_by(establishment_name, address) %>% 
-    filter(row_number() == 1)
-  
-  data <- data %>% 
-    mutate(current_date = mondays[i],
-           days_since_last_inspection = current_date - inspection_date,
-           overdue = (days_since_last_inspection > inspection_frequency)
-    )
-  
-  res[[i]] <- data %>% 
-    group_by(current_date, establishment_type, risk_category, census_block_2010) %>% 
-    summarise(value = sum(overdue))
-  
+# create a function to select last inspection prior to given date
+select_last_inspect <- function(monday) {
+  inspection_summary %>% 
+    filter(inspection_date <= monday) %>% 
+    distinct(establishment_name, address, .keep_all = TRUE)
 }
 
-res_1 <- bind_rows(res)
-res_2 <- res_1 %>% 
+# apply function to each date
+#tic("map")
+all_dates <- map(mondays, select_last_inspect)
+#toc()
+# map: 21.643 sec elapsed
+
+# expand into large data frame
+all_dates_df <- enframe(all_dates)
+all_dates_df <- bind_cols(monday = mondays, all_dates_df) %>% 
+  select(monday, value) %>% 
+  unnest()
+
+# aggregate by date, establishment type, risk category, and census block
+#tic("summarize")
+all_dates_summary <- all_dates_df %>% 
+  mutate(days_since_last_inspect = monday - inspection_date,
+         inspection_overdue = days_since_last_inspect > required_inspection_freq) %>% 
+  group_by(monday, establishment_type, risk_category, census_block_2010) %>% 
+  summarise(days_since_last_inspect = mean(days_since_last_inspect, na.rm = TRUE),
+            inspections_overdue = sum(inspection_overdue, na.rm = TRUE))
+#toc()
+# summarize: 76.215 sec elapsed
+
+
+# Clean up and export -----------------------------------------------------
+
+inspections_overdue <- all_dates_summary %>% 
   ungroup() %>% 
   mutate(feature_id = "restaurant_inspections_overdue",
          feature_type = establishment_type,
          feature_subtype = risk_category,
-         year = year(current_date),
-         week = isoweek(current_date)) %>% 
+         year = year(monday),
+         week = isoweek(monday),
+         census_block_2010 = as.character(census_block_2010),
+         value = inspections_overdue) %>% 
   select(feature_id,
          feature_type,
          feature_subtype,
@@ -146,15 +144,43 @@ res_2 <- res_1 %>%
          census_block_2010,
          value)
 
-write_csv(res_2, "issue_17/restaurant_inspections_overdue.csv")
-
-# visualize
-res_1 %>% 
+days_since_last_inspect <- all_dates_summary %>% 
   ungroup() %>% 
-  group_by(risk_category, current_date) %>% 
-  summarise(total_overdue = sum(value)) %>% 
-  ggplot() +
-  geom_bar(aes(x = current_date, y = total_overdue), stat = "identity") +
+  mutate(feature_id = "restaurant_inspections_frequency",
+         feature_type = establishment_type,
+         feature_subtype = risk_category,
+         year = year(monday),
+         week = isoweek(monday),
+         census_block_2010 = as.character(census_block_2010),
+         value = as.numeric(days_since_last_inspect)) %>% 
+  select(feature_id,
+         feature_type,
+         feature_subtype,
+         year,
+         week,
+         census_block_2010,
+         value)
+  
+write_csv(inspections_overdue, paste0(path_out, "/restaurant_inspections_overdue.csv"))
+write_csv(days_since_last_inspect, paste0(path_out,"/restaurant_inspections_frequency.csv"))
+
+
+# Visualize ---------------------------------------------------------------
+
+summary_gg <- all_dates_summary %>% 
+  ungroup() %>% 
+  group_by(risk_category, monday) %>% 
+  summarise(frequency = mean(days_since_last_inspect, na.rm = TRUE),
+            num_overdue = mean(inspections_overdue, na.rm = TRUE))
+
+ggplot(summary_gg) +
+  geom_bar(aes(x = monday, y = num_overdue), stat = "identity") +
   facet_wrap(~risk_category)
 
-ggsave("issue_17/restaurant_inspections_overdue.png")
+ggsave(paste0(path_out, "/restaurant_inspections_overdue.png"))
+
+ggplot(summary_gg) +
+  geom_bar(aes(x = monday, y = frequency), stat = "identity") +
+  facet_wrap(~risk_category)
+
+ggsave(paste0(path_out, "/restaurant_inspections_frequency.png"))
