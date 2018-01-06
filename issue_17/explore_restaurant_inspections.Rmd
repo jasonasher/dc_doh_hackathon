@@ -1,0 +1,121 @@
+---
+title: "Explore Restaurant Inspections Data"
+output: html_notebook
+---
+
+```{r setup}
+library(tidyverse)
+library(lubridate)
+
+knitr::opts_knit$set(root.dir = "/Users/kathy/Documents/_projects/dc_doh_hackathon")
+```
+
+```{r}
+
+inspection_geocode <- read_csv("data/dc_restaurant_inspections/inspections_geocoded.csv")
+inspection_summary <- read_csv("data/dc_restaurant_inspections/potential_inspection_summary_data.csv")
+inspection_detail <- read_csv("data/dc_restaurant_inspections/potential_violation_details_data.csv")
+```
+
+Let's look at the distribution of days since last inspection to determine typical 
+inspeciton frequencies based on risk category.
+```{r}
+
+inspection_summary_1 <- inspection_summary %>% 
+  arrange(establishment_name, inspection_date) %>% 
+  group_by(establishment_name) %>%
+  mutate(days_since_last_inspection = as.numeric(inspection_date - lag(inspection_date)))
+
+inspection_summary_1 %>% 
+  select(establishment_name, inspection_date, days_since_last_inspection) %>% 
+  View()
+
+inspection_summary_1 %>% 
+  filter(!is.na(days_since_last_inspection)) %>% 
+  ggplot() +
+  geom_histogram(aes(days_since_last_inspection)) +
+  facet_wrap(~risk_category) +
+  xlim(0, 100)
+```
+Looks like all risk categories peak around 5 days with a steady decrease afterwards.
+
+Maybe it's because we have included follow ups and complaint-based inspections. 
+Let's only include routine inspections.
+```{r}
+
+inspection_summary_1 %>% 
+  ungroup() %>% 
+  count(inspection_type) %>% 
+  arrange(desc(n))
+
+inspection_summary_1 %>% 
+  filter(!is.na(days_since_last_inspection), inspection_type == "Routine") %>% 
+  ggplot() +
+  geom_histogram(aes(days_since_last_inspection)) +
+  facet_wrap(~risk_category) +
+  xlim(0, 500)
+```
+
+Actually, instead of only plotting routine inspections, we have to re-calculate
+days since last inspection to include only routine inspections. 
+```{r}
+inspection_summary_1 <- inspection_summary %>% 
+  filter(inspection_type == "Routine") %>% 
+  arrange(establishment_name, inspection_date) %>% 
+  group_by(establishment_name) %>%
+  mutate(days_since_last_inspection = as.numeric(inspection_date - lag(inspection_date)))
+
+inspection_summary_1 %>% 
+  select(establishment_name, inspection_date, days_since_last_inspection) %>% 
+  View()
+
+inspection_summary_1 %>% 
+  filter(!is.na(days_since_last_inspection)) %>% 
+  ggplot() +
+  geom_histogram(aes(days_since_last_inspection), binwidth = 30) +
+  facet_wrap(~risk_category) +
+  xlim(0, 1000)
+```
+This yields a more clear pattern, although it's still hard to see any distinct cutoffs.
+
+Let's look at where the deciles fall for each risk category.
+```{r}
+p = seq(0, 1, 0.1)
+
+inspection_summary_1 %>% 
+  ungroup() %>% 
+  group_by(risk_category) %>% 
+  summarise(quantiles = list(sprintf("%1.0f%%", p*100)),
+            days = list(quantile(days_since_last_inspection, p, na.rm = TRUE))) %>% 
+  unnest() %>% 
+  spread(quantiles, days)
+```
+Ok, it looks like it will be hard to set cutoffs based on, say, the 90th percentile
+of days between inspections, because it looks like other than category 1, the rest
+of the categories are inspected at about the same frequency. It also looks like there
+is a wide range of inspection frequencies within each category.
+
+For now it's use some placeholders...
+- Category 1: 900 days
+- Category 2-5: 600 days
+
+Next I want to look at the date range of the file.
+```{r}
+range(inspection_summary_1$inspection_date, na.rm = TRUE)
+```
+
+These dates don't make sense. Let's look at the first and last few dates.
+```{r}
+dates <- inspection_summary_1 %>% 
+  count(inspection_date) %>% 
+  arrange(inspection_date)
+
+head(dates, 50)
+tail(dates, 50)
+```
+Looks like there are a few dates in 2006/2017, but the inspections really start
+in earnest in 2008. Also, the last inspection appears to be on 2017-09-11. So,
+let's make our weekly periods start around 2018-01-01 and end around 2017-09-11.
+
+
+
